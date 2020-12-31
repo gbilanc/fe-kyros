@@ -357,7 +357,9 @@ public final class FrameMain extends java.awt.Frame
     @Override
     public void updateList(List<TabDocume> docs) {
         model.clear();
-        model.addAll(docs);
+        docs.forEach(doc->{
+            model.add(0,doc);
+        });
         jList1.repaint();
     }
 
