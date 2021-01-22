@@ -107,12 +107,14 @@ public final class Statics {
 
     public static List<TabDocume> getDocumenti(LocalDate data1, LocalDate data2, Long prog1, Long prog2) {
         List<TabDocume> result = new ArrayList();
-        String query = "SELECT * FROM DOCUMENTI T1 "
-                + "INNER JOIN TAB_TIPODOCUME T2 ON T1.TIPODOC=T2.CODICE "
-                + "WHERE T1.CODEAZI = ? AND T2.TIPODOC_DF <> 'TD00' "
-                + "AND T1.PROGDOC BETWEEN ? AND ? "
-                + "AND T1.DATAREG BETWEEN ? AND ? "
-                + "ORDER BY T1.DATAREG, T1.PROGDOC;";
+        String query = "SELECT * FROM DOCUMENTI DOC "
+                + "INNER JOIN TAB_TIPODOCUME TID ON DOC.TIPODOC = TID.CODICE "
+                + "INNER JOIN ANAGRA ANA ON DOC.CODEANA = ANA.CODEANA "
+                + "WHERE DOC.CODEAZI = ? AND TID.TIPODOC_DF <> 'TD00' "
+                + "AND DOC.PROGDOC BETWEEN ? AND ? "
+                + "AND DOC.DATAREG BETWEEN ? AND ? "
+                + "AND ANA.TIPOANA = 'N' "
+                + "ORDER BY DOC.DATAREG, DOC.PROGDOC;";
         try (Connection conn = Statics.getDbConn()) {
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, "001");
